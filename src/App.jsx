@@ -6,6 +6,8 @@ import PortfolioList from './components/portfolioList/PortfolioList';
 import PieChart from './components/pieChart/PieChart';
 import LineChart from './components/lineChart/LineChart';
 
+import { DataContextProvider } from './utils/DataContext';
+
 const StyledAppDiv = styled.div`
   display: flex;
   flex-direction: column;
@@ -26,16 +28,18 @@ const StyledSecondaryDiv = styled.div`
 function App() {
   return (
     <StyledAppDiv className="App">
-      <Navigation />
-      <Container maxWidth="lg">
-        <StyledPrimaryDiv>
-          <PortfolioList />
-          <PieChart />
-        </StyledPrimaryDiv>
-        <StyledSecondaryDiv>
-          <LineChart />
-        </StyledSecondaryDiv>
-      </Container>
+      <DataContextProvider>
+        <Navigation />
+        <Container maxWidth="lg">
+          <StyledPrimaryDiv>
+            <PortfolioList />
+            <PieChart />
+          </StyledPrimaryDiv>
+          <StyledSecondaryDiv>
+            <LineChart />
+          </StyledSecondaryDiv>
+        </Container>
+      </DataContextProvider>
     </StyledAppDiv>
   );
 }
