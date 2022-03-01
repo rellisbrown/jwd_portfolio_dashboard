@@ -6,29 +6,29 @@ import {
   NavbarLinkContainer,
   NavbarExtendedContainer,
   NavbarInnerContainer,
-  NavbarLink, Logo, OpenLinksButton
+  NavbarLink,
+  Logo,
+  OpenLinksButton,
 } from './index';
-import logoImg from './logo.jpg'
+import logoImg from './logo.jpg';
+
 function Navigation() {
-   
   return (
     <NavbarContainer>
       <NavbarInnerContainer>
         <LeftContainer>
           <NavbarLinkContainer>
-            <NavbarLink to="/signup"> sign up</NavbarLink>
-            <NavbarLink to="/register"> register</NavbarLink>
-            <NavbarLink to="/stock"> view stock </NavbarLink>
-            <OpenLinksButton>
-              &#8801;
-            </OpenLinksButton>
+            <NavbarLink to="/signin"> Sign In</NavbarLink>
+            <NavbarLink to="/register"> Register</NavbarLink>
+            <NavbarLink to="/dashboard"> Dashboard </NavbarLink>
+            <OpenLinksButton>&#8801;</OpenLinksButton>
           </NavbarLinkContainer>
         </LeftContainer>
         <RightContainer>
-          <Logo src = {logoImg}></Logo>
+          <Logo src={logoImg} />
         </RightContainer>
       </NavbarInnerContainer>
-      <NavbarExtendedContainer></NavbarExtendedContainer>
+      <NavbarExtendedContainer />
     </NavbarContainer>
   );
 }

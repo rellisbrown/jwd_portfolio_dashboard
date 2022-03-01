@@ -1,11 +1,16 @@
 import styled from '@emotion/styled';
 import Container from '@mui/material/Container';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  Navigate,
+} from 'react-router-dom';
 import Navigation from './components/navigation/Navigation';
 import PortfolioList from './components/portfolioList/PortfolioList';
 import PieChart from './components/pieChart/PieChart';
 import LineChart from './components/lineChart/LineChart';
-import Signup from './pages/signup';
+import SignIn from './components/signIn/SignIn';
 
 const StyledAppDiv = styled.div`
   display: flex;
@@ -26,23 +31,30 @@ const StyledSecondaryDiv = styled.div`
 
 function App() {
   return (
-    <StyledAppDiv className="App">
-      <Router>
+    <Router>
+      <StyledAppDiv className="App">
         <Navigation />
         <Routes>
-          <Route path="/" />
-          <Route path="/signUp" element = { Signup } />
-          <Route path="/stock" element = { LineChart } />
+          <Route path="/" element={<Navigate to="/dashboard" replace />} />
+          <Route path="/signin" element={<SignIn />} />
+          <Route
+            path="/dashboard"
+            element={
+              // eslint-disable-next-line
+              <Container maxWidth="lg">
+                <StyledPrimaryDiv>
+                  <PortfolioList />
+                  <PieChart />
+                </StyledPrimaryDiv>
+                <StyledSecondaryDiv>
+                  <LineChart />
+                </StyledSecondaryDiv>
+              </Container>
+            }
+          />
         </Routes>
-      </Router>
-      <Container maxWidth="lg">
-        <StyledPrimaryDiv>
-          <PortfolioList />
-          <PieChart />
-        </StyledPrimaryDiv>
-        <StyledSecondaryDiv />
-      </Container>
-    </StyledAppDiv>
+      </StyledAppDiv>
+    </Router>
   );
 }
 
