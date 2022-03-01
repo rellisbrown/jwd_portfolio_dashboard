@@ -12,6 +12,8 @@ import PieChart from './components/pieChart/PieChart';
 import LineChart from './components/lineChart/LineChart';
 import SignIn from './components/signIn/SignIn';
 
+import { DataContextProvider } from './utils/DataContext';
+
 const StyledAppDiv = styled.div`
   display: flex;
   flex-direction: column;
