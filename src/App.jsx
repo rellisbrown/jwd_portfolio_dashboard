@@ -31,8 +31,8 @@ function App() {
         <Navigation />
         <Routes>
           <Route path="/" />
-          <Route path="/signUp" element = { Signup } />
-          <Route path="/stock" element = { LineChart } />
+          <Route path="/signUp" element = { <Signup/> } />
+          <Route path="/stock" element = { <LineChart/> } />
         </Routes>
       </Router>
       <Container maxWidth="lg">
