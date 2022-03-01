@@ -1,10 +1,11 @@
 import styled from '@emotion/styled';
 import Container from '@mui/material/Container';
-
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Navigation from './components/navigation/Navigation';
 import PortfolioList from './components/portfolioList/PortfolioList';
 import PieChart from './components/pieChart/PieChart';
 import LineChart from './components/lineChart/LineChart';
+import Signup from './pages/signup';
 
 const StyledAppDiv = styled.div`
   display: flex;
@@ -26,15 +27,20 @@ const StyledSecondaryDiv = styled.div`
 function App() {
   return (
     <StyledAppDiv className="App">
-      <Navigation />
+      <Router>
+        <Navigation />
+        <Routes>
+          <Route path="/" />
+          <Route path="/signUp" element = { Signup } />
+          <Route path="/stock" element = { LineChart } />
+        </Routes>
+      </Router>
       <Container maxWidth="lg">
         <StyledPrimaryDiv>
           <PortfolioList />
           <PieChart />
         </StyledPrimaryDiv>
-        <StyledSecondaryDiv>
-          <LineChart />
-        </StyledSecondaryDiv>
+        <StyledSecondaryDiv />
       </Container>
     </StyledAppDiv>
   );
