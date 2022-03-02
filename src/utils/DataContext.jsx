@@ -17,6 +17,9 @@ const DataContextProvider = ({ children }) => {
     { stock: 'TSLA', quantity: 200 },
   ]);
 
+  const [loading, setLoading] = useState(true);
+  const [apiLimit, setApiLimit] = useState(false);
+
   const fetchStockData = async (stock) => {
     let returnValue = {};
     try {
@@ -29,6 +32,10 @@ const DataContextProvider = ({ children }) => {
       });
       if (res.status !== 200) {
         console.log('Status:', `${res.status} - ${res.statusText}`);
+      } else if (res.data.Note?.includes('Thank you for using')) {
+        setLoading(false);
+        setApiLimit(true);
+        return returnValue;
       } else {
         const timeSeriesData = res.data['Weekly Adjusted Time Series'];
         const tempData = [];
@@ -90,6 +97,8 @@ const DataContextProvider = ({ children }) => {
   }; */
 
   const fetchAllData = useCallback(async () => {
+    setLoading(true);
+    setApiLimit(false);
     const tempPortfolioDetails = [];
     for (const item of portfolioDetails) {
       // eslint-disable-next-line
@@ -111,6 +120,7 @@ const DataContextProvider = ({ children }) => {
       tempPortfolioDetails[tempPortfolioDetails.length - 1].data !== undefined
     ) {
       setPortfolioDetails(tempPortfolioDetails);
+      setLoading(false);
     }
   }, [portfolioDetails]);
 
@@ -134,9 +144,11 @@ const DataContextProvider = ({ children }) => {
   const contextValue = useMemo(
     () => ({
       portfolioDetails,
+      loading,
+      apiLimit,
       handlePortfolioDetailsQuantityChange,
     }),
-    [portfolioDetails, handlePortfolioDetailsQuantityChange]
+    [portfolioDetails, loading, apiLimit, handlePortfolioDetailsQuantityChange]
   );
 
   return (
