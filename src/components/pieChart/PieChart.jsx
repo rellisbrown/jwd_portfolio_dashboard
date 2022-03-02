@@ -1,15 +1,33 @@
-import React, { useContext, useRef } from 'react';
+import React, {
+  useContext,
+  useRef,
+  useEffect,
+  useState,
+  useCallback,
+} from 'react';
 import styled from '@emotion/styled';
+import CircularProgress from '@mui/material/CircularProgress';
 import { scaleOrdinal, arc, pie } from 'd3';
+import { useAnimation } from 'framer-motion';
 import useResizeObserver from '../../utils/useResizeObserver';
 import { DataContext } from '../../utils/DataContext';
+import PieArc from './PieArc';
+import Tooltip from './Tooltip';
+
+const StyledLoadingDiv = styled.div`
+  display: flex;
+  width: 100%;
+  height: 100%;
+`;
+
+const StyledCircularProgress = styled(CircularProgress)`
+  margin: auto;
+`;
 
 const PieChart = () => {
   const wrapperRef = useRef();
   const dataContext = useContext(DataContext);
   const dimensions = useResizeObserver(wrapperRef);
-
-  if (!dimensions) return <div ref={wrapperRef}>loading...</div>;
 
   const pieData = dataContext.portfolioDetails.map((item) => ({
     stock: item.stock,
@@ -24,8 +42,6 @@ const PieChart = () => {
     totalPortfolioValue += item.value;
   }
 
-  console.log(pieData);
-
   const margin = {
     top: 20,
     bottom: 20,
@@ -38,15 +54,17 @@ const PieChart = () => {
   const radius = Math.min(width, height) / 2;
 
   const color = scaleOrdinal().range([
-    '#8aa5dec2',
-    '#bb516bc2',
-    '#3a7d57c2',
-    '#66216bb3',
+    '#8aa5de',
+    '#bb516b',
+    '#3a7d57',
+    '#66216b',
   ]);
 
-  const pieArc = arc()
+  const createArc = arc()
     .outerRadius(radius - 10)
-    .innerRadius(radius - 70);
+    .innerRadius(radius - 50)
+    .cornerRadius(2)
+    .padAngle(Math.PI / 120);
 
   const pieGenerator = pie()
     .sort(null)
@@ -54,37 +72,99 @@ const PieChart = () => {
 
   const data = pieGenerator(pieData);
 
-  console.log(data);
+  const [tooltipData, setTooltipData] = useState({
+    visible: false,
+  });
+
+  const handleTooltipShow = useCallback(
+    (e, d) => {
+      if (wrapperRef.current) {
+        const bounding = wrapperRef.current.getBoundingClientRect();
+        setTooltipData({
+          visible: true,
+          stock: d.stock,
+          latestClose: d.latestClose,
+          value: d.value,
+          proportion: d.value / totalPortfolioValue,
+          left: e.clientX - bounding.x,
+          top: e.clientY - bounding.y,
+          fill: d.fill,
+        });
+      }
+    },
+    [setTooltipData, totalPortfolioValue]
+  );
+  const handleTooltipHide = useCallback(
+    () => setTooltipData({ ...tooltipData, visible: false }),
+    [setTooltipData, tooltipData]
+  );
+
+  const archFinish = useRef(null);
+  const boxController = useAnimation();
+
+  useEffect(() => {
+    async function animate() {
+      await archFinish.current;
+      await boxController.start({
+        opacity: 1,
+        x: 0,
+      });
+    }
+
+    animate();
+  }, [archFinish, boxController]);
+
+  if (!dimensions) return <div ref={wrapperRef}>loading...</div>;
 
   return (
     <div
       ref={wrapperRef}
-      style={{ width: '50%', height: '400px', display: 'flex' }}
+      style={{
+        width: '50%',
+        height: '400px',
+        display: 'flex',
+        position: 'relative',
+      }}
     >
-      <svg width={width} height={height} style={{ margin: 'auto' }}>
-        <g transform={`translate(${width / 2}, ${height / 2})`}>
-          {data.map((d) => (
-            <g className="arc" key={`a${d.data.stock}`}>
-              {/* <text transform={`translate(${pieArc.centroid(d)})`} dy=".35em">
-                {d.data.stock}
-              </text> */}
-              <path d={pieArc(d)} fill={color(d.data.stock)} />
+      {dataContext.loading ? (
+        <StyledLoadingDiv>
+          <StyledCircularProgress />
+        </StyledLoadingDiv>
+      ) : (
+        <>
+          <svg width={width} height={height} style={{ margin: 'auto' }}>
+            <g transform={`translate(${width / 2}, ${height / 2})`}>
+              {data.map((d) => (
+                <PieArc
+                  key={`arc-${d.data.stock}`}
+                  fill={color(d)}
+                  path={createArc(d)}
+                  stock={d.data.stock}
+                  latestClose={d.data.latestClose}
+                  value={d.data.value}
+                  finish={archFinish}
+                  onMouseMove={handleTooltipShow}
+                  onMouseOut={handleTooltipHide}
+                />
+              ))}
             </g>
-          ))}
-        </g>
-      </svg>
-      {data.map((d) => (
-        <div
-          style={{
-            transform: `translate(${pieArc.centroid(d)[0] + width / 2}px, ${
-              pieArc.centroid(d)[1] + height / 2
-            }px)`,
-            position: 'absolute',
-          }}
-        >
-          {d.data.stock}
-        </div>
-      ))}
+          </svg>
+          {/* {data.map((d) => (
+            <div
+              key={`text-${d.data.stock}`}
+              style={{
+                transform: `translate(${
+                  createArc.centroid(d)[0] + width / 2
+                }px, ${createArc.centroid(d)[1] + height / 2}px)`,
+                position: 'absolute',
+              }}
+            >
+              {d.data.stock}
+            </div>
+          ))} */}
+          <Tooltip tooltipData={tooltipData} />
+        </>
+      )}
     </div>
   );
 };
