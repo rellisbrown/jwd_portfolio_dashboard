@@ -1,5 +1,4 @@
 import styled from '@emotion/styled';
-import Container from '@mui/material/Container';
 import {
   BrowserRouter as Router,
   Route,
@@ -7,9 +6,7 @@ import {
   Navigate,
 } from 'react-router-dom';
 import Navigation from './components/navigation/Navigation';
-import PortfolioList from './components/portfolioList/PortfolioList';
-import PieChart from './components/pieChart/PieChart';
-import LineChart from './components/lineChart/LineChart';
+import Dashboard from './components/dashboard/Dashboard';
 import SignIn from './components/signIn/SignIn';
 
 import { DataContextProvider } from './utils/DataContext';
@@ -17,18 +14,6 @@ import { DataContextProvider } from './utils/DataContext';
 const StyledAppDiv = styled.div`
   display: flex;
   flex-direction: column;
-`;
-
-const StyledPrimaryDiv = styled.div`
-  display: flex;
-  flex-direction: row;
-  width: 100%;
-`;
-
-const StyledSecondaryDiv = styled.div`
-  display: flex;
-  flex-direction: row;
-  width: 100%;
 `;
 
 function App() {
@@ -40,21 +25,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Navigate to="/dashboard" replace />} />
             <Route path="/signin" element={<SignIn />} />
-            <Route
-              path="/dashboard"
-              element={
-                // eslint-disable-next-line
-                <Container maxWidth="lg">
-                  <StyledPrimaryDiv>
-                    <PortfolioList />
-                    <PieChart />
-                  </StyledPrimaryDiv>
-                  <StyledSecondaryDiv>
-                    <LineChart />
-                  </StyledSecondaryDiv>
-                </Container>
-              }
-            />
+            <Route path="/dashboard" element={<Dashboard />} />
           </Routes>
         </StyledAppDiv>
       </Router>
