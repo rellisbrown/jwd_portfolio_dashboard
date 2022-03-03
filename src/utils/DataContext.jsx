@@ -141,14 +141,28 @@ const DataContextProvider = ({ children }) => {
     });
   }, []);
 
+  const handlePortfolioDetailsDelete = useCallback((stock) => {
+    setPortfolioDetails((prev) => {
+      const tempDetails = prev.filter((item) => item.stock !== stock);
+      return tempDetails;
+    });
+  }, []);
+
   const contextValue = useMemo(
     () => ({
       portfolioDetails,
       loading,
       apiLimit,
       handlePortfolioDetailsQuantityChange,
+      handlePortfolioDetailsDelete,
     }),
-    [portfolioDetails, loading, apiLimit, handlePortfolioDetailsQuantityChange]
+    [
+      portfolioDetails,
+      loading,
+      apiLimit,
+      handlePortfolioDetailsQuantityChange,
+      handlePortfolioDetailsDelete,
+    ]
   );
 
   return (

@@ -8,13 +8,22 @@ import { DataContext } from '../../utils/DataContext';
 
 const StyledPrimaryDiv = styled.div`
   display: flex;
+  flex-direction: column;
+  width: 100%;
+  /*  border: solid 1.5px #686e91;
+  border-radius: 10px; */
+  margin: 1rem auto 1rem auto;
+`;
+
+const StyledPrimaryDivChartContainer = styled.div`
+  display: flex;
   flex-direction: row;
   width: 100%;
 `;
 
 const StyledSecondaryDiv = styled.div`
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   width: 100%;
 `;
 
@@ -28,6 +37,17 @@ const StyledApiLimitText = styled.h4`
   display: flex;
   margin: auto;
   color: red;
+`;
+
+const StyledTitleDiv = styled.div`
+  width: 100%;
+  display: flex;
+  background-color: #8d2f2f;
+`;
+
+const StyledTitleText = styled.h2`
+  margin: 0.3rem auto 0.3rem 2rem;
+  color: white;
 `;
 
 const Dashboard = () => {
@@ -46,10 +66,18 @@ const Dashboard = () => {
   return (
     <Container maxWidth="lg">
       <StyledPrimaryDiv>
-        <PortfolioList />
-        <PieChart />
+        <StyledTitleDiv>
+          <StyledTitleText>Portfolio Overview</StyledTitleText>
+        </StyledTitleDiv>
+        <StyledPrimaryDivChartContainer>
+          <PortfolioList />
+          <PieChart />
+        </StyledPrimaryDivChartContainer>
       </StyledPrimaryDiv>
       <StyledSecondaryDiv>
+        <StyledTitleDiv style={{ backgroundColor: '#c5c748' }}>
+          <StyledTitleText>Equity Performance</StyledTitleText>
+        </StyledTitleDiv>
         <LineChart />
       </StyledSecondaryDiv>
     </Container>

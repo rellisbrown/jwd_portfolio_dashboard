@@ -122,7 +122,7 @@ const PieChart = () => {
       ref={wrapperRef}
       style={{
         width: '50%',
-        height: '400px',
+        height: '350px',
         display: 'flex',
         position: 'relative',
       }}
