@@ -1,38 +1,42 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useContext } from 'react';
 import * as d3 from 'd3';
-import { axisBottom, axisLeft } from 'd3';
-
-import Data from './mockdata.json';
+import { axisLeft, axisTop } from 'd3';
+import { DataContext } from '../../utils/DataContext';
 
 export default function LineChart() {
+  const contextValue = useContext(DataContext);
   const svgRef = useRef(null);
 
+  console.log(contextValue.portfolioDetails);
   const innerHeight = 300;
   const innerWidth = 550;
   const margin = { right: 150, bottom: 150, top: 50, left: 150 };
   const outerHeight = innerHeight + margin.top + margin.bottom;
   const outerWidth = innerWidth + margin.left + margin.right;
 
-  const lineData = Data.map((item) => ({
-    year: new Date(item.year),
-    value: Number(item['trees-cut']),
+  const lineData = contextValue.portfolioDetails[0].data.map((item) => ({
+    date: item.date,
+    value: item.close,
   }));
+  console.log(contextValue.portfolioDetails);
+  const yValues = lineData.map((item) => item.value);
+  const yScale = d3
+    .scaleLinear()
+    .domain([d3.min(yValues), d3.max(yValues)])
+    .range([0, outerWidth]);
 
-  const yScale = d3.scaleLinear().domain([0, 100]).range([innerHeight, 0]);
-
-  const xValues = lineData.map((item) => item.year);
+  const xValues = lineData.map((item) => item.date);
   const xScale = d3
     .scaleTime()
     .domain([d3.min(xValues), d3.max(xValues)])
     .range([0, innerWidth]);
 
-  const xAxis = axisBottom(xScale)
+  const xAxis = axisTop(xScale)
     .tickFormat((i) => i.getFullYear())
     .tickSizeOuter(10)
     .tickPadding(5);
 
-  const yAxis = axisLeft(yScale).tickFormat((i) => `${i}k`);
-  /*  .tickSizeInner(10); */
+  const yAxis = axisLeft(yScale).tickFormat((i) => `${i}%`);
 
   useEffect(() => {
     d3.select(svgRef.current)
@@ -54,7 +58,7 @@ export default function LineChart() {
       .data(lineData)
       .enter()
       .append('circle')
-      .attr('cx', (d) => xScale(d.year))
+      .attr('cx', (d) => xScale(d.date))
       .attr('cy', (d) => yScale(d.value))
       .attr('r', 5)
       .attr('transform', `translate(${margin.left}, ${margin.top})`)
@@ -69,7 +73,7 @@ export default function LineChart() {
         'd',
         d3
           .line()
-          .x((d) => xScale(d.year))
+          .x((d) => xScale(d.date))
           .y((d) => yScale(d.value))
       )
 
@@ -84,7 +88,7 @@ export default function LineChart() {
       .attr('text-anchor', 'start')
       .attr('font-size', '2.00rem')
       .attr('font-weight', '1000')
-      .text('deforestation');
+      .text('stock');
 
     d3.select(svgRef.current)
       .append('text')
@@ -102,7 +106,7 @@ export default function LineChart() {
       .attr('text-anchor', 'start')
       .attr('font-size', '1.2rem')
       .attr('font-weight', '200')
-      .text('no. of trees ');
+      .text('stock ');
   }, [
     lineData,
     margin.top,

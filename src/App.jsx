@@ -33,6 +33,7 @@ const StyledSecondaryDiv = styled.div`
 
 function App() {
   return (
+    <DataContextProvider>
     <Router>
       <StyledAppDiv className="App">
         <Navigation />
@@ -57,6 +58,7 @@ function App() {
         </Routes>
       </StyledAppDiv>
     </Router>
+    </DataContextProvider>
   );
 }
 
