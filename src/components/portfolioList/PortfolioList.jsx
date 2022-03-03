@@ -13,7 +13,10 @@ const PortfolioList = () => {
       List
       <Button
         onClick={() =>
-          contextValue.handlePortfolioDetailsQuantityChange('IBM', 400)
+          contextValue.handlePortfolioDetailsQuantityChange(
+            'IBM',
+            contextValue.portfolioDetails[0].quantity + 50
+          )
         }
       >
         Test

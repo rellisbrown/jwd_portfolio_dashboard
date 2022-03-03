@@ -11,8 +11,8 @@ const DataContext = createContext({});
 
 const DataContextProvider = ({ children }) => {
   const [portfolioDetails, setPortfolioDetails] = useState([
-    { stock: 'IBM', quantity: 100 },
-    { stock: 'AAPL', quantity: 300 },
+    { stock: 'IBM', quantity: 500 },
+    { stock: 'AAPL', quantity: 600 },
     { stock: 'AMZN', quantity: 150 },
     { stock: 'TSLA', quantity: 200 },
   ]);
