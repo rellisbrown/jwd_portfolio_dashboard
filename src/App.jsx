@@ -19,17 +19,31 @@ const StyledAppDiv = styled.div`
 function App() {
   return (
     <DataContextProvider>
-      <Router>
-        <StyledAppDiv className="App">
-          <Navigation />
-          <Routes>
-            <Route path="/" element={<Navigate to="/dashboard" replace />} />
-            <Route path="/signin" element={<SignIn />} />
-            <Route path="/dashboard" element={<Dashboard />} />
-          </Routes>
-        </StyledAppDiv>
-      </Router>
-    </DataContextProvider>
+    <Router>
+      <StyledAppDiv className="App">
+        <Navigation />
+        <Routes>
+          <Route path="/" element={<Navigate to="/dashboard" replace />} />
+          <Route path="/signin" element={<SignIn />} />
+          <Route
+            path="/dashboard"
+            element={
+              // eslint-disable-next-line
+              <Container maxWidth="lg">
+                <StyledPrimaryDiv>
+                  <PortfolioList />
+                  <PieChart />
+                </StyledPrimaryDiv>
+                <StyledSecondaryDiv>
+                  <LineChart />
+                </StyledSecondaryDiv>
+              </Container>
+            }
+          />
+        </Routes>
+      </StyledAppDiv>
+    </Router>
+
   );
 }
 
