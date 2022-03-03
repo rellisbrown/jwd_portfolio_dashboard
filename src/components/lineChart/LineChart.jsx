@@ -1,7 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import * as d3 from 'd3';
 import { axisBottom, axisLeft } from 'd3';
-
 import Data from './mockdata.json';
 
 export default function LineChart() {
