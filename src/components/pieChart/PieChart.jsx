@@ -13,6 +13,7 @@ import useResizeObserver from '../../utils/useResizeObserver';
 import { DataContext } from '../../utils/DataContext';
 import PieArc from './PieArc';
 import Tooltip from './Tooltip';
+import Legend from './Legend';
 
 const StyledLoadingDiv = styled.div`
   display: flex;
@@ -48,8 +49,8 @@ const PieChart = () => {
     left: 20,
     right: 20,
   };
-
-  const width = dimensions?.width - margin.left - margin.right;
+  const legendWidth = 125;
+  const width = dimensions?.width - margin.left - margin.right - legendWidth;
   const height = dimensions?.height - margin.top - margin.bottom;
   const radius = Math.min(width, height) / 2;
 
@@ -149,20 +150,13 @@ const PieChart = () => {
               ))}
             </g>
           </svg>
-          {/* {data.map((d) => (
-            <div
-              key={`text-${d.data.stock}`}
-              style={{
-                transform: `translate(${
-                  createArc.centroid(d)[0] + width / 2
-                }px, ${createArc.centroid(d)[1] + height / 2}px)`,
-                position: 'absolute',
-              }}
-            >
-              {d.data.stock}
-            </div>
-          ))} */}
           <Tooltip tooltipData={tooltipData} />
+          <Legend
+            data={data}
+            color={color}
+            visible={!dataContext.loading}
+            width={legendWidth}
+          />
         </>
       )}
     </div>

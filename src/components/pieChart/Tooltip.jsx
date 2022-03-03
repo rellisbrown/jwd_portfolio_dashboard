@@ -47,50 +47,46 @@ const StyledTooltipText = styled.p`
   padding-right: 1rem;
 `;
 
-const Tooltip = ({ tooltipData }) => {
-  const test = 1;
-
-  return (
-    <StyledCard
-      visible={tooltipData.visible}
-      top={tooltipData.top}
-      left={tooltipData.left}
-    >
-      <StyledColorCircle fill={tooltipData.fill} />
-      <StyledTooltipTextDiv>
-        <StyledTooltipTextLine>
-          <StyledTooltipLabel>Stock:</StyledTooltipLabel>
-          <StyledTooltipText>{tooltipData.stock}</StyledTooltipText>
-        </StyledTooltipTextLine>
-        <StyledTooltipTextLine>
-          <StyledTooltipLabel>Current Price:</StyledTooltipLabel>
-          <StyledTooltipText>
-            $
-            {tooltipData.latestClose?.toLocaleString('en-UK', {
-              maximumSignificantDigits: 4,
-            })}
-          </StyledTooltipText>
-        </StyledTooltipTextLine>
-        <StyledTooltipTextLine>
-          <StyledTooltipLabel>Holding Value:</StyledTooltipLabel>
-          <StyledTooltipText>
-            $
-            {tooltipData.value?.toLocaleString('en-UK', {
-              maximumSignificantDigits: 4,
-            })}
-          </StyledTooltipText>
-        </StyledTooltipTextLine>
-        <StyledTooltipTextLine>
-          <StyledTooltipLabel style={{ paddingBottom: 0 }}>
-            Holding Proportion:
-          </StyledTooltipLabel>
-          <StyledTooltipText style={{ paddingBottom: 0 }}>
-            {(tooltipData.proportion * 100).toFixed(2)}%
-          </StyledTooltipText>
-        </StyledTooltipTextLine>
-      </StyledTooltipTextDiv>
-    </StyledCard>
-  );
-};
+const Tooltip = ({ tooltipData }) => (
+  <StyledCard
+    visible={tooltipData.visible}
+    top={tooltipData.top}
+    left={tooltipData.left}
+  >
+    <StyledColorCircle fill={tooltipData.fill} />
+    <StyledTooltipTextDiv>
+      <StyledTooltipTextLine>
+        <StyledTooltipLabel>Stock:</StyledTooltipLabel>
+        <StyledTooltipText>{tooltipData.stock}</StyledTooltipText>
+      </StyledTooltipTextLine>
+      <StyledTooltipTextLine>
+        <StyledTooltipLabel>Current Price:</StyledTooltipLabel>
+        <StyledTooltipText>
+          $
+          {tooltipData.latestClose?.toLocaleString('en-UK', {
+            maximumSignificantDigits: 4,
+          })}
+        </StyledTooltipText>
+      </StyledTooltipTextLine>
+      <StyledTooltipTextLine>
+        <StyledTooltipLabel>Holding Value:</StyledTooltipLabel>
+        <StyledTooltipText>
+          $
+          {tooltipData.value?.toLocaleString('en-UK', {
+            maximumSignificantDigits: 4,
+          })}
+        </StyledTooltipText>
+      </StyledTooltipTextLine>
+      <StyledTooltipTextLine>
+        <StyledTooltipLabel style={{ paddingBottom: 0 }}>
+          Holding Proportion:
+        </StyledTooltipLabel>
+        <StyledTooltipText style={{ paddingBottom: 0 }}>
+          {(tooltipData.proportion * 100).toFixed(2)}%
+        </StyledTooltipText>
+      </StyledTooltipTextLine>
+    </StyledTooltipTextDiv>
+  </StyledCard>
+);
 
 export default Tooltip;

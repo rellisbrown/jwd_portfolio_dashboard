@@ -1,11 +1,6 @@
 import React, { useEffect, useRef, useCallback } from 'react';
-import * as d3 from 'd3';
 import {
   motion,
-  useMotionValue,
-  useTransform,
-  animate,
-  useSpring,
   useAnimation,
 } from 'framer-motion';
 import styled from '@emotion/styled';
