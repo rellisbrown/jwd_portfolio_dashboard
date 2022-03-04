@@ -10,6 +10,37 @@ import axios from 'axios';
 const DataContext = createContext({});
 
 const DataContextProvider = ({ children }) => {
+  const userDatabase = useMemo(
+    () => [
+      {
+        name: 'Joe Bloggs',
+        email: 'joe@abc.com',
+        password: '1234',
+      },
+      {
+        name: 'Jane Doe',
+        email: 'jane@abc.com',
+        password: '1234',
+      },
+    ],
+    []
+  );
+
+  const [userDetails, setUserDetails] = useState({});
+
+  const signIn = useCallback(
+    (email, password) => {
+      const user = userDatabase.find((item) => item.email === email);
+      if (user.password === password) {
+        setUserDetails(user);
+      }
+    },
+    [userDatabase]
+  );
+  const signOut = useCallback(() => {
+    setUserDetails({});
+  }, []);
+
   const [portfolioDetails, setPortfolioDetails] = useState([
     { stock: 'IBM', quantity: 500, data: [] },
     { stock: 'AAPL', quantity: 600, data: [] },
@@ -153,15 +184,21 @@ const DataContextProvider = ({ children }) => {
       portfolioDetails,
       loading,
       apiLimit,
+      userDetails,
       handlePortfolioDetailsQuantityChange,
       handlePortfolioDetailsDelete,
+      signIn,
+      signOut,
     }),
     [
       portfolioDetails,
       loading,
       apiLimit,
+      userDetails,
       handlePortfolioDetailsQuantityChange,
       handlePortfolioDetailsDelete,
+      signIn,
+      signOut,
     ]
   );
 
