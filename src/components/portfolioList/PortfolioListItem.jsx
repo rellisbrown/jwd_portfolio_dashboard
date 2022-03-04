@@ -76,8 +76,6 @@ const PortfolioListItem = ({ itemData, loading }) => {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [quantity, setQuantity] = useState(itemData.quantity);
 
-  console.log(quantity);
-
   const handleDialogOpen = () => {
     setDialogOpen(true);
   };
