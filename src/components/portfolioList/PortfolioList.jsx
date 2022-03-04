@@ -69,9 +69,6 @@ const StyledSkeleton = styled(Skeleton)`
 
 const PortfolioList = () => {
   const contextValue = useContext(DataContext);
-  console.log('loading', contextValue.loading);
-  console.log('apilimit', contextValue.apiLimit);
-  console.log(contextValue.portfolioDetails);
 
   let totalPortfolioValue = 0;
   for (const item of contextValue.portfolioDetails) {
@@ -94,8 +91,6 @@ const PortfolioList = () => {
     };
   });
 
-  console.log(listData);
-
   return (
     <Card
       style={{
@@ -106,7 +101,7 @@ const PortfolioList = () => {
     >
       <List style={{ paddingTop: '0px', paddingBottom: '0px' }}>
         <StyledListItem>
-          <StyledListItemText>Stock</StyledListItemText>
+          <StyledListItemText>Equity</StyledListItemText>
           <StyledListItemText>Quantity</StyledListItemText>
           <StyledListItemText>
             <StyledSellIcon />

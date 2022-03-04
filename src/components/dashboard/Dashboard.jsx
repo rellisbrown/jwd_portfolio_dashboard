@@ -12,7 +12,7 @@ const StyledPrimaryDiv = styled.div`
   width: 100%;
   /*  border: solid 1.5px #686e91;
   border-radius: 10px; */
-  margin: 1rem auto 1rem auto;
+  margin: 2rem auto 1rem auto;
 `;
 
 const StyledPrimaryDivChartContainer = styled.div`
@@ -25,6 +25,7 @@ const StyledSecondaryDiv = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
+  margin-top: 2rem;
 `;
 
 const StyledApiLimitDiv = styled.div`
