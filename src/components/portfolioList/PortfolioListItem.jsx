@@ -109,7 +109,7 @@ const PortfolioListItem = ({ itemData, loading }) => {
         {loading ? (
           <StyledSkeleton />
         ) : (
-          itemData.latestClose.toLocaleString('en-UK', {
+          itemData.latestClose?.toLocaleString('en-UK', {
             maximumSignificantDigits: 6,
           })
         )}
@@ -123,7 +123,7 @@ const PortfolioListItem = ({ itemData, loading }) => {
             <StyledChangeSpan
               color={itemData.weeklyChange > 0 ? '#02c502' : 'red'}
             >
-              {itemData.weeklyChange.toFixed(2)}
+              {itemData.weeklyChange?.toFixed(2)}
             </StyledChangeSpan>
           </>
         )}
@@ -132,13 +132,13 @@ const PortfolioListItem = ({ itemData, loading }) => {
         {loading ? (
           <StyledSkeleton />
         ) : (
-          itemData.value.toLocaleString('en-UK', {
+          itemData.value?.toLocaleString('en-UK', {
             maximumSignificantDigits: 6,
           })
         )}
       </StyledListItemText>
       <StyledListItemText>
-        {loading ? <StyledSkeleton /> : (itemData.proportion * 100).toFixed(1)}
+        {loading ? <StyledSkeleton /> : (itemData.proportion * 100)?.toFixed(1)}
       </StyledListItemText>
       <StyledListItemText>
         <StyledEditButton
@@ -154,7 +154,7 @@ const PortfolioListItem = ({ itemData, loading }) => {
         aria-labelledby="edit-stock-dialog"
       >
         <StyledDialogTitle id="edit-stock-dialog-title">
-          Edit Stock Details
+          Edit Equity Details
         </StyledDialogTitle>
         <StyledDialogContent>
           <TextField

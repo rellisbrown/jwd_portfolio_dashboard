@@ -56,7 +56,7 @@ const Tooltip = ({ tooltipData }) => (
     <StyledColorCircle fill={tooltipData.fill} />
     <StyledTooltipTextDiv>
       <StyledTooltipTextLine>
-        <StyledTooltipLabel>Stock:</StyledTooltipLabel>
+        <StyledTooltipLabel>Equity:</StyledTooltipLabel>
         <StyledTooltipText>{tooltipData.stock}</StyledTooltipText>
       </StyledTooltipTextLine>
       <StyledTooltipTextLine>

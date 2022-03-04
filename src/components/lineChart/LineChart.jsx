@@ -1,8 +1,36 @@
 import React, { useEffect, useRef, useContext } from 'react';
 import * as d3 from 'd3';
 import { axisLeft, axisTop, axisBottom } from 'd3';
+import CircularProgress from '@mui/material/CircularProgress';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
+import styled from '@emotion/styled';
 import { DataContext } from '../../utils/DataContext';
 import useResizeObserver from '../../utils/useResizeObserver';
+
+const StyledLoadingDiv = styled.div`
+  display: flex;
+  width: 100%;
+  height: 100%;
+`;
+
+const StyledCircularProgress = styled(CircularProgress)`
+  margin: auto;
+`;
+
+const StyledSelectDiv = styled.div`
+  position: absolute;
+  right: 10px;
+  top: 0px;
+  width: 125px;
+`;
+
+const StyledInputLabel = styled(InputLabel)`
+  background-color: white;
+  padding-right: 0.3rem;
+`;
 
 export default function LineChart() {
   const contextValue = useContext(DataContext);
@@ -10,13 +38,24 @@ export default function LineChart() {
   const wrapperRef = useRef();
   const dimensions = useResizeObserver(wrapperRef);
 
-  const margin = { right: 50, bottom: 100, top: 50, left: 100 };
+  const [selectedStock, setSelectedStock] = React.useState(
+    contextValue.portfolioDetails[0]
+  );
+
+  const handleStockSelect = (event) => {
+    const tempArray = contextValue.portfolioDetails.find(
+      (item) => item.stock === event.target.value
+    );
+    setSelectedStock(tempArray);
+  };
+
+  const margin = { right: 10, bottom: 100, top: 50, left: 90 };
   const outerHeight = dimensions?.height;
   const outerWidth = dimensions?.width;
   const innerHeight = outerHeight - margin.top - margin.bottom;
   const innerWidth = outerWidth - margin.left - margin.right;
 
-  const lineData = contextValue.portfolioDetails[0].data.map((item) => ({
+  const lineData = selectedStock.data.map((item) => ({
     date: item.date,
     value: item.close,
   }));
@@ -65,18 +104,6 @@ export default function LineChart() {
       .attr('class', 'x-axis');
 
     d3.select(svgRef.current)
-      .append('g')
-      .selectAll('dot')
-      .data(lineData)
-      .enter()
-      .append('circle')
-      .attr('cx', (d) => xScale(d.date))
-      .attr('cy', (d) => yScale(d.value))
-      .attr('r', 2)
-      .attr('transform', `translate(${margin.left}, ${margin.top})`)
-      .style('fill', 'pink');
-
-    d3.select(svgRef.current)
       .append('path')
       .datum(lineData)
       .attr('class', 'line')
@@ -90,18 +117,30 @@ export default function LineChart() {
       )
 
       .style('fill', 'none')
-      .style('stroke', 'pink')
+      .style('stroke', '#8788aed4')
       .style('stroke-width', '2');
+
+    d3.select(svgRef.current)
+      .append('g')
+      .selectAll('dot')
+      .data(lineData)
+      .enter()
+      .append('circle')
+      .attr('cx', (d) => xScale(d.date))
+      .attr('cy', (d) => yScale(d.value))
+      .attr('r', 1)
+      .attr('transform', `translate(${margin.left}, ${margin.top})`)
+      .style('fill', 'blue');
 
     d3.select(svgRef.current)
       .append('text')
       .attr('x', innerWidth / 2)
       .attr('y', 30)
       .attr('text-anchor', 'start')
-      .attr('font-size', '2.00rem')
-      .attr('font-weight', '1000')
+      .attr('font-size', '1.5rem')
+      .attr('font-weight', '600')
       .attr('class', 'title')
-      .text('Stock price over time');
+      .text('Equity price over time');
 
     d3.select(svgRef.current)
       .append('text')
@@ -115,11 +154,11 @@ export default function LineChart() {
 
     d3.select(svgRef.current)
       .append('text')
-      .attr('x', 21)
+      .attr('x', 0)
       .attr('y', innerHeight / 2 + margin.top)
       .attr('text-anchor', 'start')
-      .attr('font-size', '1.2rem')
-      .attr('font-weight', '200')
+      .attr('font-size', '1rem')
+      .attr('font-weight', '400')
       .attr('class', 'x-label')
       .text('Price');
   }, [
@@ -138,8 +177,45 @@ export default function LineChart() {
   if (!dimensions) return <div ref={wrapperRef}>loading...</div>;
 
   return (
-    <div style={{ width: '100%', height: '500px' }} ref={wrapperRef}>
-      <svg width={outerWidth} height={outerHeight} ref={svgRef} />
+    <div
+      style={{
+        width: '100%',
+        height: '500px',
+        marginTop: '1rem',
+        position: 'relative',
+      }}
+      ref={wrapperRef}
+    >
+      <StyledSelectDiv>
+        <FormControl size="small" fullWidth>
+          <StyledInputLabel id="stock-select-label">
+            Selected Equity
+          </StyledInputLabel>
+          <Select
+            labelId="stock-select-label"
+            id="stock-select"
+            value={selectedStock.stock}
+            label="Stock"
+            onChange={handleStockSelect}
+          >
+            {contextValue.portfolioDetails.map((item) => (
+              <MenuItem key={item.stock} value={item.stock}>
+                {item.stock}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+      </StyledSelectDiv>
+
+      {contextValue.loading ? (
+        <StyledLoadingDiv>
+          <StyledCircularProgress />
+        </StyledLoadingDiv>
+      ) : (
+        <>
+          <svg width={outerWidth} height={outerHeight} ref={svgRef} />
+        </>
+      )}
     </div>
   );
 }
