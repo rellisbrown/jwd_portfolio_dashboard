@@ -11,8 +11,8 @@ const DataContext = createContext({});
 
 const DataContextProvider = ({ children }) => {
   const [portfolioDetails, setPortfolioDetails] = useState([
-    { stock: 'IBM', quantity: 100, data: [] },
-    { stock: 'AAPL', quantity: 300, data: [] },
+    { stock: 'IBM', quantity: 500, data: [] },
+    { stock: 'AAPL', quantity: 600, data: [] },
     { stock: 'AMZN', quantity: 150, data: [] },
     { stock: 'TSLA', quantity: 200, data: [] },
   ]);
@@ -141,14 +141,28 @@ const DataContextProvider = ({ children }) => {
     });
   }, []);
 
+  const handlePortfolioDetailsDelete = useCallback((stock) => {
+    setPortfolioDetails((prev) => {
+      const tempDetails = prev.filter((item) => item.stock !== stock);
+      return tempDetails;
+    });
+  }, []);
+
   const contextValue = useMemo(
     () => ({
       portfolioDetails,
       loading,
       apiLimit,
       handlePortfolioDetailsQuantityChange,
+      handlePortfolioDetailsDelete,
     }),
-    [portfolioDetails, loading, apiLimit, handlePortfolioDetailsQuantityChange]
+    [
+      portfolioDetails,
+      loading,
+      apiLimit,
+      handlePortfolioDetailsQuantityChange,
+      handlePortfolioDetailsDelete,
+    ]
   );
 
   return (
