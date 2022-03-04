@@ -1,3 +1,4 @@
+import React, { useContext } from 'react';
 import styled from '@emotion/styled';
 import {
   BrowserRouter as Router,
@@ -9,7 +10,7 @@ import Navigation from './components/navigation/Navigation';
 import Dashboard from './components/dashboard/Dashboard';
 import SignIn from './components/signIn/SignIn';
 
-import { DataContextProvider } from './utils/DataContext';
+import { DataContextProvider, DataContext } from './utils/DataContext';
 
 const StyledAppDiv = styled.div`
   display: flex;

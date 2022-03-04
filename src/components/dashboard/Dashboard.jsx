@@ -1,6 +1,7 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import styled from '@emotion/styled';
 import Container from '@mui/material/Container';
+import { useNavigate } from 'react-router-dom';
 import PortfolioList from '../portfolioList/PortfolioList';
 import PieChart from '../pieChart/PieChart';
 import LineChart from '../lineChart/LineChart';
@@ -53,6 +54,14 @@ const StyledTitleText = styled.h2`
 
 const Dashboard = () => {
   const context = useContext(DataContext);
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (Object.keys(context.userDetails).length === 0) {
+      navigate('/signin');
+    }
+  }, [context.userDetails, navigate]);
 
   if (context.apiLimit) {
     return (

@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 export const NavbarContainer = styled.nav`
   width: 100%;
   height: ${(props) => (props.extendNavbar ? '100vh' : '80px')};
-  background-color: black;
+  background-color: #5a6784;
   display: flex;
   flex-direction: column;
   @media (min-width: 700px) {
@@ -17,6 +17,9 @@ export const LeftContainer = styled.div`
   display: flex;
   align-items: center;
   padding-left: 5%;
+  margin: auto;
+  margin-left: 50%;
+  transform: translateX(-50%);
 `;
 
 export const RightContainer = styled.div`
@@ -34,6 +37,7 @@ export const NavbarInnerContainer = styled.div`
 
 export const NavbarLinkContainer = styled.div`
   display: flex;
+  margin-left: 2rem;
 `;
 
 export const NavbarLink = styled(Link)`
