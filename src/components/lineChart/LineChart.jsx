@@ -42,6 +42,10 @@ export default function LineChart() {
     contextValue.portfolioDetails[0]
   );
 
+  useEffect(() => {
+    setSelectedStock(contextValue.portfolioDetails[0]);
+  }, [contextValue.portfolioDetails]);
+
   const handleStockSelect = (event) => {
     const tempArray = contextValue.portfolioDetails.find(
       (item) => item.stock === event.target.value
@@ -84,15 +88,18 @@ export default function LineChart() {
     d3.select(svgRef.current).select('.y-axis').remove();
     d3.select(svgRef.current).select('.title').remove();
     d3.select(svgRef.current).selectAll('g').remove();
+    d3.select(svgRef.current).select('.area').remove();
     d3.select(svgRef.current).select('.line').remove();
     d3.select(svgRef.current).select('.x-label').remove();
     d3.select(svgRef.current).select('.y-label').remove();
 
     d3.select(svgRef.current)
       .append('g')
-      .call(yAxis)
       .attr('transform', `translate(${margin.left}, ${margin.top})`)
-      .attr('class', 'y-axis');
+      .attr('class', 'y-axis')
+      .transition()
+      .duration(700)
+      .call(yAxis);
 
     d3.select(svgRef.current)
       .append('g')
@@ -103,9 +110,31 @@ export default function LineChart() {
       )
       .attr('class', 'x-axis');
 
-    d3.select(svgRef.current)
+    const area = d3
+      .select(svgRef.current)
       .append('path')
       .datum(lineData)
+      .attr('class', 'area')
+      .attr('transform', `translate(${margin.left}, ${margin.top})`)
+      .attr('opacity', 0)
+      .style('fill', '#718dd647')
+      .attr(
+        'd',
+        d3
+          .area()
+          .x((d) => xScale(d.date))
+          .y0(innerHeight)
+          .y1((d) => yScale(d.value))
+      )
+      .transition()
+      .duration(2000)
+      .attr('opacity', 1);
+
+    const line = d3
+      .select(svgRef.current)
+      .append('path')
+      .datum(lineData)
+      .join('path')
       .attr('class', 'line')
       .attr('transform', `translate(${margin.left}, ${margin.top})`)
       .attr(
@@ -115,10 +144,19 @@ export default function LineChart() {
           .x((d) => xScale(d.date))
           .y((d) => yScale(d.value))
       )
-
       .style('fill', 'none')
       .style('stroke', '#8788aed4')
       .style('stroke-width', '2');
+
+    const pathNode = line.node();
+    const pathLength = pathNode?.getTotalLength();
+    const transitionPath = d3.transition().duration(2500).ease(d3.easeLinear);
+
+    line
+      .attr('stroke-dasharray', pathLength)
+      .attr('stroke-dashoffset', pathLength)
+      .transition(transitionPath)
+      .attr('stroke-dashoffset', 0);
 
     d3.select(svgRef.current)
       .append('g')
@@ -130,7 +168,14 @@ export default function LineChart() {
       .attr('cy', (d) => yScale(d.value))
       .attr('r', 1)
       .attr('transform', `translate(${margin.left}, ${margin.top})`)
-      .style('fill', 'blue');
+      .style('fill', 'blue')
+      .attr('opacity', 0);
+
+    d3.selectAll('circle')
+      .transition()
+      .delay((d, i) => i * 10)
+      .duration(1000)
+      .attr('opacity', 1);
 
     d3.select(svgRef.current)
       .append('text')
