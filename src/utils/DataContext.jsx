@@ -11,12 +11,11 @@ const DataContext = createContext({});
 
 const DataContextProvider = ({ children }) => {
   const [portfolioDetails, setPortfolioDetails] = useState([
-
     { stock: 'IBM', quantity: 100, data: [] },
     { stock: 'AAPL', quantity: 300, data: [] },
     { stock: 'AMZN', quantity: 150, data: [] },
     { stock: 'TSLA', quantity: 200, data: [] },
-
+  ]);
 
   const [loading, setLoading] = useState(true);
   const [apiLimit, setApiLimit] = useState(false);
