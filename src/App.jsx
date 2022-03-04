@@ -25,21 +25,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Navigate to="/dashboard" replace />} />
             <Route path="/signin" element={<SignIn />} />
-            <Route
-              path="/dashboard"
-              element={
-                // eslint-disable-next-line
-                <Container maxWidth="lg">
-                  <StyledPrimaryDiv>
-                    <PortfolioList />
-                    <PieChart />
-                  </StyledPrimaryDiv>
-                  <StyledSecondaryDiv>
-                    <LineChart />
-                  </StyledSecondaryDiv>
-                </Container>
-              }
-            />
+            <Route path="/dashboard" element={<Dashboard />} />
           </Routes>
         </StyledAppDiv>
       </Router>
